@@ -1,31 +1,52 @@
 # Eightfold Candidate Profile Transformer
 
-## Overview
+A Python-based data transformation pipeline that consolidates candidate information from multiple structured and unstructured sources into a single canonical candidate profile.
 
-The Eightfold Candidate Profile Transformer is a Python-based data transformation pipeline that consolidates candidate information from multiple heterogeneous sources into a single canonical candidate profile.
-
-The system ingests both structured and unstructured data, resolves conflicting information using configurable source priorities, normalizes values, tracks data provenance, and generates a configurable JSON output.
+The transformer normalizes data, resolves conflicting values using source priorities, tracks provenance, validates the output, and produces a configurable JSON profile.
 
 ---
 
 ## Features
 
-* Parse multiple candidate data sources
+- Parse multiple candidate data sources:
+  - Recruiter CSV
+  - ATS JSON
+  - Resume PDF
+  - Recruiter Notes (TXT)
+- Normalize candidate information (phone numbers, skills, company names)
+- Merge duplicate records using configurable source priorities
+- Track provenance for every selected field
+- Validate the final profile using a JSON schema
+- Support configurable output projection through a runtime configuration file
 
-  * Recruiter CSV
-  * ATS JSON
-  * Resume PDF
-  * Recruiter Notes (TXT)
-* Normalize candidate information
+---
 
-  * Phone numbers
-  * Skills
-  * Company names
-* Merge duplicate candidate records
-* Resolve conflicting values using configurable source priorities
-* Track provenance for every selected field
-* Runtime-configurable output using JSON configuration
-* Generate a clean canonical candidate profile
+## Pipeline
+
+```text
+Input Sources
+      │
+      ▼
+    Parsers
+      │
+      ▼
+ Normalization
+      │
+      ▼
+ Merge & Conflict Resolution
+      │
+      ▼
+ Provenance Tracking
+      │
+      ▼
+ Validation
+      │
+      ▼
+ Configurable Projection
+      │
+      ▼
+ Canonical JSON Output
+```
 
 ---
 
@@ -35,149 +56,61 @@ The system ingests both structured and unstructured data, resolves conflicting i
 EightFold_Transformer/
 │
 ├── config/
-│   └── default.json                 # Runtime projection configuration
-│
-├── logs/
-│   └── application.log              # Generated automatically
-│
-├── output/
-│   └── result.json                  # Final transformed output
-│
 ├── sample_data/
-│   ├── recruiter.csv
-│   ├── ats.json
-│   ├── resume.pdf
-│   └── recruiter_notes.txt
-│
 ├── src/
-│   ├── __init__.py
-│   │
-│   ├── main.py                      # Entry point
-│   ├── logger.py                    # Logging configuration
-│   ├── normalizer.py                # Data normalization
-│   ├── merger.py                    # Merge & conflict resolution
-│   ├── projection.py                # Configurable output projection
-│   ├── validator.py                 # Output validation
-│   ├── github_api.py                # GitHub enrichment
-│   ├── schema.py                    # JSON schema
-│   │
-│   └── parsers/
-│       ├── __init__.py
-│       ├── csv_parser.py
-│       ├── ats_parser.py
-│       ├── resume_parser.py
-│       └── notes_parser.py
+│   ├── parsers/
+│   ├── main.py
+│   ├── merger.py
+│   ├── normalizer.py
+│   ├── projection.py
+│   ├── validator.py
+│   ├── schema.py
+│   ├── github_api.py
+│   └── logger.py
 │
 ├── tests/
-│   ├── __init__.py
-│   ├── test_csv.py
-│   ├── test_merger.py
-│   ├── test_normalizer.py
-│   └── test_validator.py
-│
+├── output/
 ├── requirements.txt
 ├── README.md
-├── .gitignore
-
+└── .gitignore
 ```
 
 ---
 
-## Source Priority
+## Conflict Resolution
 
-When conflicting values are encountered, the following priority order is used:
+When multiple sources contain different values for the same field, the transformer selects the value based on the following priority:
 
-| Source          | Priority |
-| --------------- | -------- |
-| ATS JSON        | 4        |
-| Recruiter CSV   | 3        |
-| Resume PDF      | 2        |
-| Recruiter Notes | 1        |
+1. ATS JSON
+2. Recruiter CSV
+3. Resume PDF
+4. Recruiter Notes
 
-The value from the highest-priority source is selected for the canonical profile.
+All selected values retain provenance information indicating their source.
 
 ---
 
 ## Installation
 
-Clone the repository:
+Clone the repository and install the required dependencies:
 
 ```bash
 git clone <repository-url>
 cd EightFold_Transformer
-```
-
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
-```
-
----
-
-## Required Libraries
-
-* pandas
-* pdfplumber
-* phonenumbers
-* jsonschema
-* rapidfuzz
-* python-dateutil
-* openpyxl
-
-Install manually if needed:
-
-```bash
-pip install pandas pdfplumber phonenumbers jsonschema rapidfuzz python-dateutil openpyxl
 ```
 
 ---
 
 ## Running the Project
 
-Run from the project root directory:
+Run the transformer from the project root directory:
 
 ```bash
 python src/main.py --csv sample_data/recruiter.csv --ats sample_data/ats.json --resume sample_data/resume.pdf --notes sample_data/recruiter_notes.txt --config config/default.json
 ```
 
-The generated canonical profile will be written to the output directory.
-
----
-
-## Runtime Configuration
-
-The transformer supports configurable output through a JSON configuration file.
-
-Example capabilities:
-
-* Select output fields
-* Rename fields
-* Apply normalization
-* Configure required fields
-* Include or exclude provenance
-* Handle missing values
-
-Example:
-
-```json
-{
-  "fields": [
-    {
-      "path": "full_name"
-    },
-    {
-      "path": "primary_email",
-      "from": "emails[0]"
-    },
-    {
-      "path": "phone",
-      "from": "phones[0]",
-      "normalize": "E164"
-    }
-  ]
-}
-```
+The transformed candidate profile is generated in the `output/` directory.
 
 ---
 
@@ -206,39 +139,46 @@ Example:
 
 ---
 
-## Design Highlights
+## Technologies Used
 
-* Modular parser architecture
-* Canonical data model
-* Source-based conflict resolution
-* Data normalization
-* Provenance tracking
-* Config-driven transformation
-* Extensible design for additional data sources
+- Python 3
+- Pandas
+- PDFPlumber
+- JSON Schema
+- Phonenumbers
+- RapidFuzz
+- Python-Dateutil
 
 ---
 
-## Technologies Used
+## Testing
 
-* Python 3
-* JSON
-* CSV
-* PDF Parsing
-* Regular Expressions
-* Object-Oriented Programming
+Run the test suite using:
+
+```bash
+pytest -v
+```
+
+Current status:
+
+```
+6 tests passed
+```
 
 ---
 
 ## Future Improvements
 
-* LinkedIn profile parser
-* OCR support for scanned resumes
-* Web-based user interface
-* REST API
-* Machine learning-based confidence scoring
+- LinkedIn profile integration
+- OCR support for scanned resumes
+- REST API interface
+- Web-based dashboard
+- Machine learning-based confidence scoring
 
 ---
 
 ## Author
 
-Developed as part of the Eightfold AI Engineering Assignment.
+**Sonali Sahu**
+
+Developed for the **Eightfold Engineering Intern Assignment (2026)**.
