@@ -1,0 +1,32 @@
+{
+    "fields": [
+        {
+            "output": "full_name",
+            "path": "full_name"
+        },
+        {
+            "output": "emails",
+            "path": "emails"
+        },
+        {
+            "output": "phones",
+            "path": "phones"
+        },
+        {
+            "output": "current_company",
+            "path": "current_company"
+        },
+        {
+            "output": "current_title",
+            "path": "current_title"
+        },
+        {
+            "output": "skills",
+            "path": "skills"
+        },
+        {
+            "output": "provenance",
+            "path": "provenance"
+        }
+    ]
+}

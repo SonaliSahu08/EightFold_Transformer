@@ -1,0 +1,14 @@
+{
+  "candidate_name": "Sample Candidate",
+  "mail": "sample.candidate@example.com",
+  "phone": "+919876543210",
+  "organization": "TechNova Solutions",
+  "designation": "Software Engineer",
+  "skills": [
+    "Java",
+    "Python",
+    "Spring Boot",
+    "SQL"
+  ],
+  "github": "https://github.com/samplecandidate"
+}

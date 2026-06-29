@@ -1,0 +1,22 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Pytest Cache
+.pytest_cache/
+
+# VS Code Settings
+.vscode/
+
+# Logs
+logs/
+
+# Generated Output
+output/
+
+# OS Files
+.DS_Store
+Thumbs.db

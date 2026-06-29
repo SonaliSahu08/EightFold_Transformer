@@ -1,0 +1,7 @@
+pandas
+requests
+pdfplumber
+phonenumbers
+python-dateutil
+jsonschema
+pytest

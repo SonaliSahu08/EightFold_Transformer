@@ -1,0 +1,9 @@
+Recruiter Notes
+Candidate: Sample Candidate
+
+Strong Java fundamentals.
+Good communication skills.
+Experience with Spring Boot, REST APIs, SQL.
+GitHub profile shared.
+Preferred Location: Bangalore.
+Available to join in 30 days.
