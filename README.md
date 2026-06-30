@@ -181,4 +181,4 @@ Current status:
 
 **Sonali Sahu**
 
-Developed for the **Eightfold Engineering Intern Assignment (2026)**.
+Developed for the **Eightfold Engineering Intern Assignment**.
